@@ -1,7 +1,7 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
-canvas.width = 600;
-canvas.height = 400;
+canvas.width = 800;
+canvas.height = 1200;
 
 /// Firts try!
 let arrowUp = false;
@@ -19,7 +19,7 @@ function animate(){
     spaceship.drawSpaceShip();
     spaceship.rightMove();    
     spaceship.leftMove();
-
+    obstacle.drawObstacle();
     
     requestAnimationFrame(animate);
 }
