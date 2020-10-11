@@ -1,9 +1,11 @@
+@import url(//db.onlinewebfonts.com/c/b2e75c336df191233b3096682c9ee6be?family=PixelarRegularW01-Regular);
+
 #canvas {
 position: absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
-width: 800px;
-height: 1200px;
+width: 400px;
+height: 600px;
 border: 2px solid black;
 }

@@ -1,15 +1,15 @@
 class Obstacle{
     constructor(){
          // Obs Size
-         this.width = 100;
-         this.height = 300;
+         this.width = 50;
+         this.height = 150;
          //Position
-         this.x = 300;
-         this.y = 900;
+         this.x = 175;
+         this.y = 500;
     }
 
     drawObstacle() {
-        ctx.fillStyle = 'yellow';
+        ctx.fillStyle = 'grey';
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
