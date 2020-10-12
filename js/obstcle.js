@@ -9,8 +9,9 @@ class Obstacle{
     }
 
     drawObstacle() {
-        ctx.fillStyle = 'grey';
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        const obs = new Image
+        obs.src = './assets/obstacle.png'
+        ctx.drawImage(obs, this.x, this.y, this.width, this.height);
     }
 }
 

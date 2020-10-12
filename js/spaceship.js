@@ -2,15 +2,15 @@ class Spaceship {
     constructor() {
         // Spaceship Size
         this.width = 20;
-        this.height = 10;
+        this.height = 20;
         //Position
         this.x = 110;
         this.y = 0;
-        
+
         //Forces
         this.gravity = 0.02;
         this.acceleration = 0
-        this.friction = 0.79;
+        this.friction = 0.89;
         this.vy = 0;
         //Left and rigth
         this.vx = 0;
@@ -18,33 +18,26 @@ class Spaceship {
         this.xFriction = 0.1;
         this.floorForce = 0;
         //GAME OVER
-        this.stop = false
-
+        this.crashed = false
+        this.fuel = 100
+        this.fuelCounter = 0
+        this.explosionFrame = 0;
+        this.win = false
     }
 
     //Postion element arround Ship
-    
+
     update() {
-
-
-
         // console.log(this.vy);
 
-
-        if (arrowUp) this.impulse();
-        if (!arrowUp) this.acceleration = 0;
-
-
-
         // // Obstacle Colision Sides Right
-        if (this.x < obstacle.x + obstacle.width && this.x + this.width > obstacle.x && this.y + this.height > obstacle.y + 10) {
+        if (this.x < obstacle.x + obstacle.width && this.x + this.width > obstacle.x && this.y + this.height > obstacle.y + 4) {
             this.vy = -this.vy * this.friction;
             this.vx = -10;
 
         }
         // Obstacle Colision Sides LEFT
-        if (this.x + this.width > obstacle.x && this.x + this.width < obstacle.x + obstacle.width && this.y + this.height > obstacle.y + 10) {
-
+        if (this.x + this.width > obstacle.x && this.x + this.width < obstacle.x + obstacle.width && this.y + this.height > obstacle.y + 4) {
             this.vx = 10;
         }
 
@@ -79,107 +72,152 @@ class Spaceship {
         this.x += this.vx
 
     }
-//// Game Over Functions
+    /// YOU WIN
+    landed(){
+        let SpeedCoubter = Math.round(this.vy.toFixed(2) * 10)
+        if (SpeedCoubter === 0 && this.x < obstacle.x + obstacle.width && this.x + this.width > obstacle.x && this.y + this.height > obstacle.y + 1) {
+         this.win = true
+        }
+    }
+
+    youWin(){
+        if (this.win){
+            ctx.fillStyle = '#63DBBD';
+            ctx.font = "40px PixelarRegularW01-Regular";
+            ctx.fillText("YOU WIN", canvas.width / 2 - 60, canvas.height / 2);
+            this.gravity = 0;
+            this.orizontalSpeed = 0;
+            console.log(this.gravity,this.orizontalSpeed);
+            }
+        }
+        
+    
+
+
+    //// Game Over Functions
     crash() {
-        console.log("this.stop", this.stop)
         let SpeedCoubter = Math.round(this.vy.toFixed(2) * 10)
         if (SpeedCoubter > 10 && this.y + this.height > canvas.height) {
-            this.stop = true
+            this.crashed = true
+        }else if (SpeedCoubter > 10 && this.x + this.width > obstacle.x && this.x + this.width < obstacle.x + obstacle.width && this.y + this.height > obstacle.y + 1){
+            this.crashed = true
+        }else if(SpeedCoubter > 10 && this.x < obstacle.x + obstacle.width && this.x + this.width > obstacle.x && this.y + this.height > obstacle.y + 1){
+            this.crashed = true
+        }else if(SpeedCoubter > 10 && this.y + this.height > obstacle.y && this.x + this.width > obstacle.x && this.x + this.width < obstacle.x + obstacle.width + this.width ){
+            this.crashed = true
         }
-
     }
 
     gameOver() {
-        let eX = this.x
-        let eY = this.y
+        if (this.crashed) {
 
-        if (this.stop) {
-            const image = new Image
-           
-            image.src = './assets/explotion.png'
-            ctx.fillStyle = "red"
-            //ctx.fillText("Test",20,20)
-           // ctx.clearRect(eX - 10, eY - 20, 40, 40)
-           ctx.drawImage(image, this.x-10, this.y-20, 40, 40);
+            const explosion = new Image
 
-            ctx.font = "24px PixelarRegularW01-Regular";
-            ctx.fillText("GAME OVER ", canvas.width / 2 - 40, canvas.height / 2);
+            explosion.src = './assets/explotionsheet.png'
+
+            ctx.drawImage(explosion, this.explosionFrame * 40, 0, 40, 40, this.x - 10, this.y - 20, 50, 50);
+            this.explosionFrame++
+            ctx.fillStyle = 'white';
+            ctx.font = "40px PixelarRegularW01-Regular";
+            ctx.fillText("GAME OVER", canvas.width / 2 - 70, canvas.height / 2);
         }
     }
 
 
-///////STATS
+    ///////STATS
     drawData() {
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = '#63DBBD';
         let verticalSpeed = this.vy.toFixed(2) * 10
         ctx.font = "24px PixelarRegularW01-Regular";
-        ctx.fillText("Y: " + Math.round(verticalSpeed), 16, 24);
+        ctx.fillText("SPEED: " + Math.abs(Math.round(verticalSpeed)), 16, 24);
 
-        let orizontalSpeed = this.vx.toFixed(2) * 10
+      /*  let orizontalSpeed = this.vx.toFixed(2) * 101
         ctx.font = "24px PixelarRegularW01-Regular";
         ctx.fillText("X: " + Math.round(orizontalSpeed), 16, 48);
-/*
-        let fuelCounter = 100
-        
-        
-            for (i = 0; i < fuelCounter; i++){
-            fuelCounter -= -1;
+    */
+        this.fuel -= this.fuelCounter
+
+        if (this.fuel > 0) {
+            ctx.font = "24px PixelarRegularW01-Regular";
+            ctx.fillText(Math.round(this.fuel), canvas.width - 40, 23);
+        } else {
+            ctx.font = "24px PixelarRegularW01-Regular";
+            ctx.fillText("OUT OF FUEL", canvas.width - 125, 23);
         }
-        
-        ctx.font = "24px PixelarRegularW01-Regular";
-        ctx.fillText(fuelCounter, canvas.width-40,  23);
-*/
-        
+
     }
 
-//////
+    //////Cotrolers
     drawSpaceShip() {
-        ctx.fillStyle = 'white';
+      /*  ctx.fillStyle = 'white';
         ctx.fillRect(this.x, this.y, this.width, this.height)
         if (this.x > canvas.width) {
             ctx.fillRect(this.x = canvas.x, this.y, this.width, this.height)
         } else if (this.x < canvas.x) {
             ctx.fillRect(this.x = canvas.width, this.y, this.width, this.height)
         }
+        */
+       const spx = new Image
+       spx.src = './assets/spaceship.png'
+       ctx.drawImage(spx, this.x, this.y, this.width, this.height);
+       if (this.x > canvas.width) {
+        ctx.drawImage(spx, this.x = canvas.x, this.y, this.width, this.height)
+    } else if (this.x < canvas.x) {
+        ctx.drawImage(spx, this.x = canvas.width, this.y, this.width, this.height)
+    }
     }
 
     drawBackground() {
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, 800, 1200)
+
+        const bG = new Image
+
+        bG.src = './assets/BG_game.png'
+
+        ctx.drawImage(bG, 0, 0, 400, 600);
     }
 
     impulse() {
-        this.acceleration = -0.05;
+        if (arrowUp && this.fuel > 0 && !this.win) {
+            this.acceleration = -0.05;
+            this.fuelCounter = +0.5
+        } else if (!arrowUp) {
+            this.acceleration = 0;
+            this.fuelCounter = +0;
+        }
+
     }
+
 
     leftMove() {
 
         //console.log(this.orizontalSpeed)
-        if (arrowLeft) {
+        if (arrowLeft && this.fuel > 0) {
             ctx.fillStyle = 'red';
             ctx.fillRect(this.x + this.width, this.y, 5, 5)
             this.orizontalSpeed = -0.1 - this.floorForce;
+            this.fuelCounter = +0.5
         } else if (!arrowRight) {
-            ctx.fillStyle = 'black';
             ctx.clearRect(this.x + this.width, this.y, 5, 5)
             this.orizontalSpeed = 0;
+            this.fuelCounter = +0
         }
     }
 
     rightMove() {
         //console.log(this.orizontalSpeed);
-        if (arrowRight) {
+        if (arrowRight && this.fuel > 0) {
             ctx.fillStyle = 'red';
             ctx.fillRect(this.x - 5, this.y, 5, 5)
             this.orizontalSpeed = 0.1 + this.floorForce;
+            this.fuelCounter = + 0.5
         } else if (!arrowLeft) {
             ctx.clearRect(this.x - 5, this.y, 5, 5)
             this.orizontalSpeed = 0;
+            this.fuelCounter = +0
         }
     }
-
-
-
 
 }
 
