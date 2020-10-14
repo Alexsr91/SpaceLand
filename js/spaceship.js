@@ -1,10 +1,29 @@
+
+let intersect = (obj1, obj2) => {
+    var obj1left = obj1.x;
+    var obj1top = obj1.y;
+    var obj1right = obj1.x + obj1.width;
+    var obj1bottom = obj1.y + obj1.height;
+    var obj2left = obj2.x;
+    var obj2top = obj2.y;
+    var obj2right = obj2.x + obj2.width;
+    var obj2bottom = obj2.y + obj2.height;
+    return !(
+      obj1left > obj2right ||
+      obj1top > obj2bottom ||
+      obj1right < obj2left ||
+      obj1bottom < obj2top
+    );
+  }
+
+
 class Spaceship {
     constructor() {
         // Spaceship Size
         this.width = 20;
         this.height = 20;
         //Position
-        this.x = 110;
+        this.x = Math.floor(Math.random() * 330) + 60;
         this.y = 0;
 
         //Forces
@@ -19,7 +38,7 @@ class Spaceship {
         this.floorForce = 0;
         //GAME OVER
         this.crashed = false
-        this.fuel = 100
+        this.fuel = Math.floor(Math.random() * 50) + 50;
         this.fuelCounter = 0
         this.explosionFrame = 0;
         this.win = false
@@ -84,7 +103,7 @@ class Spaceship {
         if (this.win){
             ctx.fillStyle = '#63DBBD';
             ctx.font = "40px PixelarRegularW01-Regular";
-            ctx.fillText("YOU WIN", canvas.width / 2 - 60, canvas.height / 2);
+            ctx.fillText("YOU WON", canvas.width / 2 - 60, canvas.height / 2);
             this.gravity = 0;
             this.orizontalSpeed = 0;
             console.log(this.gravity,this.orizontalSpeed);
@@ -105,11 +124,31 @@ class Spaceship {
             this.crashed = true
         }else if(SpeedCoubter > 10 && this.y + this.height > obstacle.y && this.x + this.width > obstacle.x && this.x + this.width < obstacle.x + obstacle.width + this.width ){
             this.crashed = true
+        ///UFO
+        //left
+        } else if (intersect(ufo, this)) {
+            this.crashed = true
         }
+        // }else if (this.x + this.width > ufo.x && this.x + this.width < ufo.x + ufo.width && this.y + this.height > ufo.y + 1){
+        //     this.crashed = true
+        // //right
+        // }else if(this.x < ufo.x + ufo.width && this.x + this.width > ufo.x && this.y + this.height > ufo.y + 1){
+        //     this.crashed = true
+        // //top
+        // }else if(this.y + this.height > ufo.y && this.x + this.width > ufo.x && this.x < ufo.x + ufo.width  ){
+        //     this.crashed = true
+        // //Bottom    
+        // }else if(this.y > ufo.y + ufo.height && this.x + this.width > ufo.x && this.x < ufo.x + ufo.width){
+        //     this.crashed = true
+        // }
+
     }
 
     gameOver() {
         if (this.crashed) {
+            
+         //   window.location.href= "/"
+
 
             const explosion = new Image
 
@@ -131,11 +170,6 @@ class Spaceship {
         ctx.font = "24px PixelarRegularW01-Regular";
         ctx.fillText("SPEED: " + Math.abs(Math.round(verticalSpeed)), 16, 24);
 
-      /*  let orizontalSpeed = this.vx.toFixed(2) * 101
-        ctx.font = "24px PixelarRegularW01-Regular";
-        ctx.fillText("X: " + Math.round(orizontalSpeed), 16, 48);
-    */
-        this.fuel -= this.fuelCounter
 
         if (this.fuel > 0) {
             ctx.font = "24px PixelarRegularW01-Regular";
@@ -149,14 +183,7 @@ class Spaceship {
 
     //////Cotrolers
     drawSpaceShip() {
-      /*  ctx.fillStyle = 'white';
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-        if (this.x > canvas.width) {
-            ctx.fillRect(this.x = canvas.x, this.y, this.width, this.height)
-        } else if (this.x < canvas.x) {
-            ctx.fillRect(this.x = canvas.width, this.y, this.width, this.height)
-        }
-        */
+
        const spx = new Image
        spx.src = './assets/spaceship.png'
        ctx.drawImage(spx, this.x, this.y, this.width, this.height);
@@ -180,11 +207,15 @@ class Spaceship {
 
     impulse() {
         if (arrowUp && this.fuel > 0 && !this.win) {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(this.x + 8, this.y + this.height, 5, 5)
+            this.orizontalSpeed = 0.1 + this.floorForce;
             this.acceleration = -0.05;
-            this.fuelCounter = +0.5
+            this.fuel -= 0.5
+            //this.fuelCounter = +0.5
         } else if (!arrowUp) {
             this.acceleration = 0;
-            this.fuelCounter = +0;
+            //this.fuelCounter = +0;
         }
 
     }
@@ -197,28 +228,60 @@ class Spaceship {
             ctx.fillStyle = 'red';
             ctx.fillRect(this.x + this.width, this.y, 5, 5)
             this.orizontalSpeed = -0.1 - this.floorForce;
-            this.fuelCounter = +0.5
+            this.fuel -= 0.5
+            //this.fuelCounter = +0.5
         } else if (!arrowRight) {
             ctx.clearRect(this.x + this.width, this.y, 5, 5)
             this.orizontalSpeed = 0;
-            this.fuelCounter = +0
+            //this.fuelCounter = +0
         }
     }
 
     rightMove() {
-        //console.log(this.orizontalSpeed);
+    
         if (arrowRight && this.fuel > 0) {
             ctx.fillStyle = 'red';
             ctx.fillRect(this.x - 5, this.y, 5, 5)
             this.orizontalSpeed = 0.1 + this.floorForce;
-            this.fuelCounter = + 0.5
+            this.fuel -= 0.5
+            //this.fuelCounter = + 0.5
         } else if (!arrowLeft) {
             ctx.clearRect(this.x - 5, this.y, 5, 5)
             this.orizontalSpeed = 0;
-            this.fuelCounter = +0
+            //this.fuelCounter = +0
         }
     }
 
+
+    restart(){
+
+        this.width = 20;
+        this.height = 20;
+        //Position
+        this.x = Math.floor(Math.random() * 330) + 60;
+        this.y = 0;
+
+        //Forces
+        this.gravity = 0.02;
+        this.acceleration = 0
+        this.friction = 0.89;
+        this.vy = 0;
+        //Left and rigth
+        this.vx = 0;
+        this.orizontalSpeed = 0;
+        this.xFriction = 0.1;
+        this.floorForce = 0;
+        //GAME OVER
+        this.crashed = false
+        this.fuel = Math.floor(Math.random() * 50) + 50;
+        this.fuelCounter = 0
+        this.explosionFrame = 0;
+        this.win = false
+
+        ufo.restart();
+        obstacle.restart();
+
+    }
 }
 
 const spaceship = new Spaceship();

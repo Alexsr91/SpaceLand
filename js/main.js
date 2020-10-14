@@ -8,10 +8,12 @@ canvas.y = 0;
 let arrowUp = false;
 let arrowLeft = false;
 let arrowRight = false;
+let startGame = true;
 
 // let stop = false;
 
 function cover(){
+
 const cov = new Image
 cov.src = './assets/corver.png'
 ctx.drawImage(cov, canvas.x, canvas.y, canvas.width, canvas.height);
@@ -39,6 +41,7 @@ function animate() {
     if (!spaceship.crashed) {
         spaceship.update();
         spaceship.drawSpaceShip();
+        ufo.drawUfo();
         spaceship.impulse();
         spaceship.rightMove();
         spaceship.leftMove();
@@ -77,13 +80,16 @@ window.addEventListener('keyup', function (e) {
 
 
 window.addEventListener('keydown', function (e) {
-    if (e.code === 'Enter')
+    if (e.code === 'Enter' )
     animate();
   });
 
   window.addEventListener('keydown', function (e) {
     if (e.code === 'KeyR')
-    restart();
+    spaceship.restart();
+    
   });
+
+
     
   
