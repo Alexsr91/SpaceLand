@@ -1,4 +1,10 @@
-@import url(//db.onlinewebfonts.com/c/b2e75c336df191233b3096682c9ee6be?family=PixelarRegularW01-Regular);
+/* @import url(//db.onlinewebfonts.com/c/b2e75c336df191233b3096682c9ee6be?family=PixelarRegularW01-Regular); */
+
+
+@font-face {
+    font-family: PixelarRegular;
+    src: url("../fonts/font.woff") format("woff");
+}
 
 #canvas {
 position: absolute;
@@ -8,8 +14,14 @@ transform: translate(-50%, -50%);
 width: 400px;
 height: 600px;
 border: 1px solid white;
+
 }
 
 body{
     background-color: black;
+}
+
+p{
+    color: white;
+    font-family: PixelarRegular;
 }

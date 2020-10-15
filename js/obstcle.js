@@ -8,6 +8,12 @@ class Obstacle{
          this.y = 500;
     }
 
+    drawFlag(){
+        const fla = new Image
+        fla.src = './assets/FLAG.png'
+        ctx.drawImage(fla, this.x + 10, this.y-28, 15, 30);
+    }
+
     drawObstacle() {
         const obs = new Image
         obs.src = './assets/obstacle.png'

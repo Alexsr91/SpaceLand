@@ -102,11 +102,15 @@ class Spaceship {
     youWin(){
         if (this.win){
             ctx.fillStyle = '#63DBBD';
-            ctx.font = "40px PixelarRegularW01-Regular";
+            ctx.font = "40px PixelarRegular";
             ctx.fillText("YOU WON", canvas.width / 2 - 60, canvas.height / 2);
             this.gravity = 0;
             this.orizontalSpeed = 0;
             console.log(this.gravity,this.orizontalSpeed);
+            ctx.fillStyle = 'grey';
+            ctx.font = "24px PixelarRegular";
+            ctx.fillText("PRESS R > RANDOM LEVEL", canvas.width / 2 - 105
+            , canvas.height / 2 + 40)
             }
         }
         
@@ -157,8 +161,12 @@ class Spaceship {
             ctx.drawImage(explosion, this.explosionFrame * 40, 0, 40, 40, this.x - 10, this.y - 20, 50, 50);
             this.explosionFrame++
             ctx.fillStyle = 'white';
-            ctx.font = "40px PixelarRegularW01-Regular";
+            ctx.font = "40px PixelarRegular";
             ctx.fillText("GAME OVER", canvas.width / 2 - 70, canvas.height / 2);
+            ctx.fillStyle = 'grey';
+            ctx.font = "24px PixelarRegular";
+            ctx.fillText("PRESS R TO RESTART", canvas.width / 2 - 80, canvas.height / 2 + 40
+            );
         }
     }
 
@@ -167,15 +175,15 @@ class Spaceship {
     drawData() {
         ctx.fillStyle = '#63DBBD';
         let verticalSpeed = this.vy.toFixed(2) * 10
-        ctx.font = "24px PixelarRegularW01-Regular";
+        ctx.font = "24px PixelarRegular";
         ctx.fillText("SPEED: " + Math.abs(Math.round(verticalSpeed)), 16, 24);
 
 
         if (this.fuel > 0) {
-            ctx.font = "24px PixelarRegularW01-Regular";
-            ctx.fillText(Math.round(this.fuel), canvas.width - 40, 23);
+            ctx.font = "24px PixelarRegular";
+            ctx.fillText("FUEL: " +Math.round(this.fuel), canvas.width - 80, 23);
         } else {
-            ctx.font = "24px PixelarRegularW01-Regular";
+            ctx.font = "24px PixelarRegular";
             ctx.fillText("OUT OF FUEL", canvas.width - 125, 23);
         }
 
@@ -207,8 +215,9 @@ class Spaceship {
 
     impulse() {
         if (arrowUp && this.fuel > 0 && !this.win) {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(this.x + 8, this.y + this.height, 5, 5)
+        const btm = new Image
+        btm.src = './assets/bottom.png'
+        ctx.drawImage(btm, this.x + 7, this.y + this.height, 5, 10);
             this.orizontalSpeed = 0.1 + this.floorForce;
             this.acceleration = -0.05;
             this.fuel -= 0.5
@@ -225,13 +234,15 @@ class Spaceship {
 
         //console.log(this.orizontalSpeed)
         if (arrowLeft && this.fuel > 0) {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(this.x + this.width, this.y, 5, 5)
+            const left = new Image
+            left.src = './assets/right.png'
+            ctx.drawImage(left, this.x + this.width - 2, this.y+5, 10, 5);
+           
             this.orizontalSpeed = -0.1 - this.floorForce;
             this.fuel -= 0.5
             //this.fuelCounter = +0.5
         } else if (!arrowRight) {
-            ctx.clearRect(this.x + this.width, this.y, 5, 5)
+            
             this.orizontalSpeed = 0;
             //this.fuelCounter = +0
         }
@@ -240,13 +251,16 @@ class Spaceship {
     rightMove() {
     
         if (arrowRight && this.fuel > 0) {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(this.x - 5, this.y, 5, 5)
+
+            const rig = new Image
+            rig.src = './assets/left.png'
+            ctx.drawImage(rig,this.x - 8, this.y+5, 10, 5);
+
             this.orizontalSpeed = 0.1 + this.floorForce;
             this.fuel -= 0.5
             //this.fuelCounter = + 0.5
         } else if (!arrowLeft) {
-            ctx.clearRect(this.x - 5, this.y, 5, 5)
+          
             this.orizontalSpeed = 0;
             //this.fuelCounter = +0
         }

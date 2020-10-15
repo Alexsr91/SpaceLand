@@ -18,7 +18,7 @@ const cov = new Image
 cov.src = './assets/corver.png'
 ctx.drawImage(cov, canvas.x, canvas.y, canvas.width, canvas.height);
 ctx.fillStyle = '#63DBBD';
-            ctx.font = "24px PixelarRegularW01-Regular";
+            ctx.font = "24px PixelarRegular";
             ctx.fillText("PRESS ENTER TO START", canvas.width / 2 - 95, canvas.height - 60);
 requestAnimationFrame(cover);
 }
@@ -37,6 +37,7 @@ function animate() {
     spaceship.landed();
     spaceship.youWin();
     obstacle.drawObstacle();
+    obstacle.drawFlag();
 
     if (!spaceship.crashed) {
         spaceship.update();
@@ -55,10 +56,12 @@ window.addEventListener('keydown', function (e) {
   if (e.code === 'ArrowUp') arrowUp = true;
      console.log(e.code);
     
+    
 });
 
 window.addEventListener('keyup', function (e) {
         if (e.code === 'ArrowUp') arrowUp = false;
+        
    
 });
 
@@ -82,6 +85,7 @@ window.addEventListener('keyup', function (e) {
 window.addEventListener('keydown', function (e) {
     if (e.code === 'Enter' )
     animate();
+   
   });
 
   window.addEventListener('keydown', function (e) {
